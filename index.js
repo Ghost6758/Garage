@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('file-system');
 require('dotenv').config();
-const { alert, backend, status, prefix, status_erpt, status_mo7, status_mo8, status_mo19} = require('./config.json')
+const { alert, backend, status, prefix, status_erpt, status_mo7, status_mo8, status_mo19, status_garage} = require('./config.json')
 
 client.on('ready', () => {
     // --> Log
@@ -27,6 +27,7 @@ client.on('message', async (message) => {
         message.delete();
         embed = new Discord.MessageEmbed()
             .setDescription('edit this');
+        message.channel.send(embed);
         message.channel.send(embed);
         message.channel.send(embed);
         message.channel.send(embed);
@@ -61,6 +62,11 @@ client.on('message', async (message) => {
             .setColor('#002492') 
         let mo19_e = new Discord.MessageEmbed()
             .setTitle('Met Operations 19: SFC')
+            .setFooter('Garage Overview')
+            .setTimestamp()
+            .setColor('#002492') 
+        let garage_e = new Discord.MessageEmbed()
+            .setTitle('Garage')
             .setFooter('Garage Overview')
             .setTimestamp()
             .setColor('#002492') 
@@ -142,6 +148,25 @@ client.on('message', async (message) => {
                 };
             };
         };
+        const garage = fs.readdirSync('./vehicles/garage/').filter(file => file.endsWith('.json'));
+        for (const file of garage) {
+            const userData = require(`./vehicles/garage/${file}`);
+            for(let i in userData) {
+                let type = userData[i].x;
+                if(type == 'entry') {
+                    let plate = userData[i].plate;
+                    let division = userData[i].division;
+                    let type = userData[i].type;
+                    let make = userData[i].make;
+                    let model = userData[i].model;
+                    let  status = userData[i].status;
+
+                    let string1 = `${division} (${type})`
+                    let string2 = `${plate} - ${make} ${model} - ${status}`
+                    garage_e.addField(string1, string2);
+                };
+            };
+        };
 
         // --> Fetch messages & edit with updated values
         let channel1 = client.channels.cache.get(status);
@@ -160,6 +185,10 @@ client.on('message', async (message) => {
         await channel1.messages.fetch({around: status_mo19, limit: 1})
         .then(messages => {
           messages.first().edit(mo19_e);
+        });
+        await channel1.messages.fetch({around: status_garage, limit: 1})
+        .then(messages => {
+          messages.first().edit(garage_e);
         });
     }
     if(msg.startsWith(prefix+'add')) {
@@ -281,6 +310,29 @@ client.on('message', async (message) => {
                             fs.writeFile(`./vehicles/${division}/${plate}.json`, JSON.stringify(data2, null, 4), err => {
                                 if (err) throw err;
                             });
+
+                            let data3 = {};
+                            data3 [Date.now()] = {
+                                status: "Available",
+                                timeAV: "NA",
+                            };
+                            fs.writeFile(`./vehicles/status/${plate}.json`, JSON.stringify(data3, null, 4), err => {
+                                if (err) throw err;
+                            });
+
+                            embed5 = new Discord.MessageEmbed()
+                                .setTitle('New Vehicle')
+                                .addFields(
+                                    { name: 'Division', value: division, inline: true },
+                                    { name: 'Plate', value: plate, inline: true },
+                                    { name: 'Type', value: type, inline: true },
+                                    { name: 'Make', value: make, inline: true },
+                                    { name: 'Model', value: model, inline: true },
+                                )
+                                .setColor("#00A9CE")
+                                .setFooter('Garage Alert')
+                                .setTimestamp()
+                            client.channels.cache.get(alert).send(embed5);
                         });
                     });
                     
@@ -302,7 +354,7 @@ client.on('message', async (message) => {
         // delete vehicle
     }
     if(msg.startsWith(prefix+'help')) {
-    
+        // command summary
     }
 });
 
