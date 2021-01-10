@@ -20,6 +20,7 @@ client.on('message', async (message) => {
     // --> Filter
     if(!message.content.startsWith(prefix)) return;
     const msg = message.content.toLowerCase();
+    const args = message.content.slice(prefix.length).split(' '); 
 
     // --> Tempory Commands
     if(msg.startsWith(prefix+'test')) {
@@ -162,13 +163,146 @@ client.on('message', async (message) => {
         });
     }
     if(msg.startsWith(prefix+'add')) {
-        // add new vehicle
+
+        message.delete();
+
+        // Intro Message
+        c = message.channel;
+        embed1 = new Discord.MessageEmbed()
+            .setFooter('Vehicle Management System')
+            .setColor("#005EB8")
+        embed2 = new Discord.MessageEmbed()
+            .setTitle('Vehicle details')
+            .setDescription('Which division is recieving the vehicle? (ERPT/MO7/MO8/MO19)')
+            .setColor("#00A9CE")
+            .setTimestamp()
+        c.send(embed1);
+        pending = await message.channel.send(embed2);
+
+        const filter1 = m => m.author.id == message.author.id;
+        const collector1 = c.createMessageCollector(filter1, { max: 1, time: 99999999 });
+        collector1.on('collect', async m => {
+            m.delete();
+            t = m.content.toUpperCase().slice().split(' ');
+
+            if(t[0] == 'ERPT' || t[0] == 'MO7' || t[0] == 'MO8' || t[0] == 'MO19') {
+                const division = t[0];
+                embed3 = new Discord.MessageEmbed()
+                    .setTitle('Vehicle details')
+                    .setDescription('What is the Reg plate? (Eg. BX20ABC)')
+                    .addFields(
+                        { name: 'Division', value: division, inline:true },
+                        
+                    )
+                    .setColor("#00A9CE")
+                    .setTimestamp()
+                pending.edit(embed3);
+
+                
+                const filter2 = m => m.author.id == message.author.id;
+                const collector2 = c.createMessageCollector(filter2, { max: 1, time: 99999999 });
+                collector2.on('collect', async s => {
+                    s.delete();
+
+                    const plate = s.content.toUpperCase();
+                    embed3 = new Discord.MessageEmbed()
+                        .setTitle('Vehicle details')
+                        .setDescription('What is the vehicle type? (Eg. ARV/IRV/AC/PURSUIT)')
+                        .addFields(
+                            { name: 'Division', value: division, inline: true },
+                            { name: 'Plate', value: plate, inline: true },
+                        )
+                        .setColor("#00A9CE")
+                        .setTimestamp()
+                    pending.edit(embed3);
+                    
+                    const filter2 = m => m.author.id == message.author.id;
+                    const collector2 = c.createMessageCollector(filter2, { max: 1, time: 99999999 });
+                    collector2.on('collect', async s => {
+                        s.delete();
+
+                        const type = s.content.toUpperCase();
+                        embed3 = new Discord.MessageEmbed()
+                            .setTitle('Vehicle details')
+                            .setDescription('What is the make and model? (Eg. BMW X5)')
+                            .addFields(
+                                { name: 'Division', value: division, inline: true },
+                                { name: 'Plate', value: plate, inline: true },
+                                { name: 'Type', value: type, inline: true },
+
+                            )
+                            .setColor("#00A9CE")
+                            .setTimestamp()
+                        pending.edit(embed3);
+                                    
+                        const filter2 = m => m.author.id == message.author.id;
+                        const collector2 = c.createMessageCollector(filter2, { max: 1, time: 99999999 });
+                        collector2.on('collect', async x => {
+                            x.delete();
+                            z = x.content.toUpperCase().slice().split(' ');
+                            if(!z[1]) {
+                                embedX1 = new Discord.MessageEmbed()
+                                    .setDescription('Missing data. Please restart the process by entering `'+prefix+'add`')
+                                    .setColor("#00A9CE")
+                                    .setTimestamp()
+                                pending.edit(embedX1);
+                                return
+                            }
+                            const make = z[0];
+                            const model = z[1];
+                            embed3 = new Discord.MessageEmbed()
+                                .setTitle('Vehicle details')
+                                .addFields(
+                                    { name: 'Division', value: division, inline: true },
+                                    { name: 'Plate', value: plate, inline: true },
+                                    { name: 'Type', value: type, inline: true },
+                                    { name: 'Make', value: make, inline: true },
+                                    { name: 'Model', value: model, inline: true },
+                                )
+                                .setColor("#00A9CE")
+                                .setTimestamp()
+                            pending.edit(embed3);
+
+                            embed1 = new Discord.MessageEmbed()
+                                .setFooter('Vehicle has been entered.')
+                                .setColor("#005EB8")
+                            message.channel.send(embed1);
+
+                            let data2 = {};
+                            data2 [Date.now()] = {
+                                x: "entry",
+                                plate: plate,
+                                division: division,
+                                type: type,
+                                make: make,
+                                model: model,
+                                status: 'Available'
+                            };
+                            fs.writeFile(`./vehicles/${division}/${plate}.json`, JSON.stringify(data2, null, 4), err => {
+                                if (err) throw err;
+                            });
+                        });
+                    });
+                    
+                });
+            } else {
+                embedX = new Discord.MessageEmbed()
+                    .setDescription('Unrecognised division. Please restart the process by entering `'+prefix+'add`')
+                    .setColor("#00A9CE")
+                    .setTimestamp()
+                pending.edit(embedX);
+                return
+            }
+        });
     }
     if(msg.startsWith(prefix+'set')) {
         // set status (AV/GARAGE/UNAV)
     }
     if(msg.startsWith(prefix+'delete')) {
         // delete vehicle
+    }
+    if(msg.startsWith(prefix+'help')) {
+    
     }
 });
 
