@@ -27,6 +27,9 @@ client.on('message', async (message) => {
         embed = new Discord.MessageEmbed()
             .setDescription('edit this');
         message.channel.send(embed);
+        message.channel.send(embed);
+        message.channel.send(embed);
+        message.channel.send(embed);
     }
     if(msg.startsWith(prefix+'purge')) {
         message.channel.bulkDelete(99);
@@ -157,6 +160,15 @@ client.on('message', async (message) => {
         .then(messages => {
           messages.first().edit(mo19_e);
         });
+    }
+    if(msg.startsWith(prefix+'add')) {
+        // add new vehicle
+    }
+    if(msg.startsWith(prefix+'set')) {
+        // set status (AV/GARAGE/UNAV)
+    }
+    if(msg.startsWith(prefix+'delete')) {
+        // delete vehicle
     }
 });
 
