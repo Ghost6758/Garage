@@ -2,19 +2,42 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('file-system');
 require('dotenv').config();
-const { alert, backend, status, prefix} = require('./config.json')
+const { alert, backend, status, prefix, status_erpt, status_mo7, status_mo8, status_mo19} = require('./config.json')
 
 client.on('ready', () => {
+    // --> Log
     console.log('Cleaning up the garage...');
-});
-client.on('message', (message) => {
     
-    if(message.author.bot || !message.content.startsWith(prefix) || message.channel.dm) return;
+    // --> Start the status update
+    var CronJob = require('cron').CronJob;
+    var job = new CronJob('1 * * * * *', function() {
+        client.channels.cache.get(backend).send(`${prefix}status`);
+    }, null, true, 'America/Los_Angeles');
+    job.start();
+});
+client.on('message', async (message) => {
 
-    if(message.content.toLowerCase().startsWith(prefix+'status')) {
+    // --> Filter
+    if(!message.content.startsWith(prefix)) return;
+    const msg = message.content.toLowerCase();
 
-        // --> Clear the message OR if auto do nothing
+    // --> Tempory Commands
+    if(msg.startsWith(prefix+'test')) {
         message.delete();
+        embed = new Discord.MessageEmbed()
+            .setDescription('edit this');
+        message.channel.send(embed);
+    }
+    if(msg.startsWith(prefix+'purge')) {
+        message.channel.bulkDelete(99);
+        message.channel.bulkDelete(99);
+        message.channel.bulkDelete(99);
+        message.channel.bulkDelete(99);
+        message.channel.bulkDelete(99);
+    }
+
+    // --> Commands
+    if(msg.startsWith(prefix+'status')) {
 
         // --> Declare embeds
         let erpt_e = new Discord.MessageEmbed()
@@ -38,7 +61,6 @@ client.on('message', (message) => {
             .setTimestamp()
             .setColor('#002492') 
         
-
         // --> Fetch data
         const erpt = fs.readdirSync('./vehicles/erpt/').filter(file => file.endsWith('.json'));
         for (const file of erpt) {
@@ -118,12 +140,24 @@ client.on('message', (message) => {
         };
 
         // --> Fetch messages & edit with updated values
-        client.channels.cache.get(status).send(erpt_e);
-        client.channels.cache.get(status).send(mo7_e);
-        client.channels.cache.get(status).send(mo8_e);
-        client.channels.cache.get(status).send(mo19_e);
+        let channel1 = client.channels.cache.get(status);
+        await channel1.messages.fetch({around: status_erpt, limit: 1})
+        .then(messages => {
+          messages.first().edit(erpt_e);
+        });
+        await channel1.messages.fetch({around: status_mo7, limit: 1})
+        .then(messages => {
+          messages.first().edit(mo7_e);
+        });
+        await channel1.messages.fetch({around: status_mo8, limit: 1})
+        .then(messages => {
+          messages.first().edit(mo8_e);
+        });
+        await channel1.messages.fetch({around: status_mo19, limit: 1})
+        .then(messages => {
+          messages.first().edit(mo19_e);
+        });
     }
-
 });
 
 client.login(process.env.token)
