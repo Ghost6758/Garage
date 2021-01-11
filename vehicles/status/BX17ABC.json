@@ -1,6 +1,8 @@
 {
     "12321312312312": {
         "status": "Available",
+        "plate": "BX17ABC",
+        "division": "ERPT",
         "timeAV": "NA"
     }
 }

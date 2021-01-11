@@ -23,15 +23,11 @@ client.on('message', async (message) => {
     const args = message.content.slice(prefix.length).split(' '); 
 
     // --> Tempory Commands
-    if(msg.startsWith(prefix+'test')) {
-        message.delete();
-        embed = new Discord.MessageEmbed()
-            .setDescription('edit this');
-        message.channel.send(embed);
-        message.channel.send(embed);
-        message.channel.send(embed);
-        message.channel.send(embed);
-        message.channel.send(embed);
+    if(msg.startsWith(prefix+'setup')) {
+        message.channel.send('Standby...').then(m => { m.edit(m.id) });
+        message.channel.send('Standby...').then(m => { m.edit(m.id) });
+        message.channel.send('Standby...').then(m => { m.edit(m.id) });
+        message.channel.send('Standby...').then(m => { m.edit(m.id) });
     }
     if(msg.startsWith(prefix+'purge')) {
         message.channel.bulkDelete(99);
@@ -39,6 +35,9 @@ client.on('message', async (message) => {
         message.channel.bulkDelete(99);
         message.channel.bulkDelete(99);
         message.channel.bulkDelete(99);
+    }
+    if(msg.startsWith(prefix+'test')) {
+        message.channel.send(Date.now() +  (3*8.64e+7))
     }
 
     // --> Commands
@@ -72,99 +71,98 @@ client.on('message', async (message) => {
             .setColor('#002492') 
         
         // --> Fetch data
-        const erpt = fs.readdirSync('./vehicles/erpt/').filter(file => file.endsWith('.json'));
-        for (const file of erpt) {
-            const userData = require(`./vehicles/erpt/${file}`);
+        for (file of fs.readdirSync('./vehicles/status/').filter(file => file.endsWith('.json'))) {
+            const userData = require(`./vehicles/status/${file}`);
             for(let i in userData) {
-                let type = userData[i].x;
-                if(type == 'entry') {
-                    let plate = userData[i].plate;
-                    let division = userData[i].division;
-                    let type = userData[i].type;
-                    let make = userData[i].make;
-                    let model = userData[i].model;
-                    let  status = userData[i].status;
+  
+                let division = userData[i].division;
+                let plate = userData[i].plate;
+                
+                if(userData[i].status == 'Available') {
+                    const veh = require(`./vehicles/${division}/${plate}.json`);
+                    for(let i in veh) {
+                   
+                        let type = veh[i].type;
+                        let make = veh[i].make;
+                        let model = veh[i].model;
 
-                    let string1 = `${division} (${type})`
-                    let string2 = `${plate} - ${make} ${model} - ${status}`
-                    erpt_e.addField(string1, string2);
-                };
-            };
-        };
-        const mo7 = fs.readdirSync('./vehicles/mo7/').filter(file => file.endsWith('.json'));
-        for (const file of mo7) {
-            const userData = require(`./vehicles/mo7/${file}`);
-            for(let i in userData) {
-                let type = userData[i].x;
-                if(type == 'entry') {
-                    let plate = userData[i].plate;
-                    let division = userData[i].division;
-                    let type = userData[i].type;
-                    let make = userData[i].make;
-                    let model = userData[i].model;
-                    let  status = userData[i].status;
+                        if(division == 'ERPT') {
+                            erpt_e.addField(`${division} (${type})`, `${plate} - ${make} ${model} - Available`);
+                        } else if(division == 'MO7') {
+                            mo7_e.addField(`${division} (${type})`, `${plate} - ${make} ${model} - Available`);
+                        } else if(division == 'MO8') {
+                            mo8_e.addField(`${division} (${type})`, `${plate} - ${make} ${model} - Available`);
+                        } else if(division == 'MO19') {
+                            mo19_e.addField(`${division} (${type})`, `${plate} - ${make} ${model} - Available`);
+                        };
+                        
+                    }
+                } else if(userData[i].status == 'Garage') {  
+                    let time = userData[i].timeAV;      
+                    if(time < Date.now()) {
+                        // --> This vehicle is now back in service.
+                        let data1 = {};
+                        data1 [Date.now()] = {
+                            status: "Available",
+                            plate: plate,
+                            division: division,
+                            timeAV: "NA"
+                        };
+                        fs.writeFile(`./vehicles/status/${plate}.json`, JSON.stringify(data1, null, 4), err => {
+                            if (err) throw err;
+                        });
+        
+                        const veh = require(`./vehicles/${division}/${plate}.json`);
+                        for(let i in veh) {
+        
+                            let type = veh[i].type;
+                            let make = veh[i].make;
+                            let model = veh[i].model;
+        
+                            embed = new Discord.MessageEmbed()
+                                .setTitle('Vehicle Repaired')
+                                .addFields(
+                                    { name: 'Division', value: division, inline: true },
+                                    { name: 'Plate', value: plate, inline: true },
+                                    { name: 'Type', value: type, inline: true },
+                                    { name: 'Make', value: make, inline: true },
+                                    { name: 'Model', value: model, inline: true },
+                                )
+                                .setColor("#00A9CE")
+                                .setFooter('Garage Alert')
+                                .setTimestamp()
+                            client.channels.cache.get(alert).send(embed);
 
-                    let string1 = `${division} (${type})`
-                    let string2 = `${plate} - ${make} ${model} - ${status}`
-                    mo7_e.addField(string1, string2);
-                };
-            };
-        };
-        const mo8 = fs.readdirSync('./vehicles/mo8/').filter(file => file.endsWith('.json'));
-        for (const file of mo8) {
-            const userData = require(`./vehicles/mo8/${file}`);
-            for(let i in userData) {
-                let type = userData[i].x;
-                if(type == 'entry') {
-                    let plate = userData[i].plate;
-                    let division = userData[i].division;
-                    let type = userData[i].type;
-                    let make = userData[i].make;
-                    let model = userData[i].model;
-                    let  status = userData[i].status;
+                            if(division == 'ERPT') {
+                                erpt_e.addField(`${division} (${type})`, `${plate} - ${make} ${model} - Available`);
+                            } else if(division == 'MO7') {
+                                mo7_e.addField(`${division} (${type})`, `${plate} - ${make} ${model} - Available`);
+                            } else if(division == 'MO8') {
+                                mo8_e.addField(`${division} (${type})`, `${plate} - ${make} ${model} - Available`);
+                            } else if(division == 'MO19') {
+                                mo19_e.addField(`${division} (${type})`, `${plate} - ${make} ${model} - Available`);
+                            };
 
-                    let string1 = `${division} (${type})`
-                    let string2 = `${plate} - ${make} ${model} - ${status}`
-                    mo8_e.addField(string1, string2);
-                };
-            };
-        };
-        const mo19 = fs.readdirSync('./vehicles/mo19/').filter(file => file.endsWith('.json'));
-        for (const file of mo19) {
-            const userData = require(`./vehicles/mo19/${file}`);
-            for(let i in userData) {
-                let type = userData[i].x;
-                if(type == 'entry') {
-                    let plate = userData[i].plate;
-                    let division = userData[i].division;
-                    let type = userData[i].type;
-                    let make = userData[i].make;
-                    let model = userData[i].model;
-                    let  status = userData[i].status;
-
-                    let string1 = `${division} (${type})`
-                    let string2 = `${plate} - ${make} ${model} - ${status}`
-                    mo19_e.addField(string1, string2);
-                };
-            };
-        };
-        const garage = fs.readdirSync('./vehicles/garage/').filter(file => file.endsWith('.json'));
-        for (const file of garage) {
-            const userData = require(`./vehicles/garage/${file}`);
-            for(let i in userData) {
-                let type = userData[i].x;
-                if(type == 'entry') {
-                    let plate = userData[i].plate;
-                    let division = userData[i].division;
-                    let type = userData[i].type;
-                    let make = userData[i].make;
-                    let model = userData[i].model;
-                    let  status = userData[i].status;
-
-                    let string1 = `${division} (${type})`
-                    let string2 = `${plate} - ${make} ${model} - ${status}`
-                    garage_e.addField(string1, string2);
-                };
+                            console.log('alert sent...');   
+                        };
+    
+                    } else {
+                        // --> This vehicle is still being repaired.
+                        const veh = require(`./vehicles/${division}/${plate}.json`);
+                        for(let i in veh) {
+        
+                            let type = veh[i].type;
+                            let make = veh[i].make;
+                            let model = veh[i].model;
+                            let left = Math.round(((time - Date.now()) / 8.64e+7));
+        
+                            garage_e.addField(`${division} (${type})`, `${plate} - ${make} ${model} - Unavailable (${left} days)`);
+                        };
+                    }
+                } else {
+                    console.log('Invalid status header...');
+                    return;
+                }
             };
         };
 
@@ -314,6 +312,8 @@ client.on('message', async (message) => {
                             let data3 = {};
                             data3 [Date.now()] = {
                                 status: "Available",
+                                plate: plate,
+                                division: division,
                                 timeAV: "NA",
                             };
                             fs.writeFile(`./vehicles/status/${plate}.json`, JSON.stringify(data3, null, 4), err => {
