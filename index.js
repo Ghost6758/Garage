@@ -36,9 +36,6 @@ client.on('message', async (message) => {
         message.channel.bulkDelete(99);
         message.channel.bulkDelete(99);
     }
-    if(msg.startsWith(prefix+'test')) {
-        message.channel.send(Date.now() +  (3*8.64e+7))
-    }
 
     // --> Commands
     if(msg.startsWith(prefix+'status')) {
@@ -71,15 +68,17 @@ client.on('message', async (message) => {
             .setColor('#002492') 
         
         // --> Fetch data
-        for (file of fs.readdirSync('./vehicles/status/').filter(file => file.endsWith('.json'))) {
-            const userData = require(`./vehicles/status/${file}`);
+        for (const file of fs.readdirSync('./vehicles/status/').filter(file => file.endsWith('.json'))) {
+            let rawdata = fs.readFileSync('./vehicles/status/'+file);
+            let userData = JSON.parse(rawdata);
             for(let i in userData) {
   
                 let division = userData[i].division;
                 let plate = userData[i].plate;
                 
                 if(userData[i].status == 'Available') {
-                    const veh = require(`./vehicles/${division}/${plate}.json`);
+                    let veh_ = fs.readFileSync(`./vehicles/${division}/${plate}.json`);
+                    let veh = JSON.parse(veh_);
                     for(let i in veh) {
                    
                         let type = veh[i].type;
@@ -112,7 +111,8 @@ client.on('message', async (message) => {
                             if (err) throw err;
                         });
         
-                        const veh = require(`./vehicles/${division}/${plate}.json`);
+                        let veh_ = fs.readFileSync(`./vehicles/${division}/${plate}.json`);
+                        let veh = JSON.parse(veh_);
                         for(let i in veh) {
         
                             let type = veh[i].type;
@@ -148,7 +148,8 @@ client.on('message', async (message) => {
     
                     } else {
                         // --> This vehicle is still being repaired.
-                        const veh = require(`./vehicles/${division}/${plate}.json`);
+                        let veh_ = fs.readFileSync(`./vehicles/${division}/${plate}.json`);
+                        let veh = JSON.parse(veh_);
                         for(let i in veh) {
         
                             let type = veh[i].type;
@@ -190,8 +191,6 @@ client.on('message', async (message) => {
         });
     }
     if(msg.startsWith(prefix+'add')) {
-
-        message.delete();
 
         // Intro Message
         c = message.channel;
@@ -303,7 +302,6 @@ client.on('message', async (message) => {
                                 type: type,
                                 make: make,
                                 model: model,
-                                status: 'Available'
                             };
                             fs.writeFile(`./vehicles/${division}/${plate}.json`, JSON.stringify(data2, null, 4), err => {
                                 if (err) throw err;
