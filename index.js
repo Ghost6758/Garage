@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('file-system');
 require('dotenv').config();
-const { alert, status, prefix} = require('./program/config/config.json')
+const { alert, status, prefix} = require('./program/config/config.json');
 
 // --> Load command files
 const readyX = require('./program/events/ready.js');

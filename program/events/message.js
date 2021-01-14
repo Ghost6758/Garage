@@ -1,3 +1,6 @@
+// --> Further modules
+const db = require('quick.db');
+
 // --> Load command files...
 const devX = require('./../commands/dev.js');
 const setupX = require('./../commands/setup.js');
@@ -6,6 +9,12 @@ const addX = require('./../commands/add.js');
 const setX = require('./../commands/set.js');
 const deleteX = require('./../commands/delete.js');
 const helpX = require('./../commands/help.js');
+
+// --> Database
+const status2 = new db.table('status2'); // #status
+const status3 = new db.table('status3') // status message id
+const alert2 = new db.table('alert2'); // #alert
+const setup = new db.table('setup'); // Setup?
 
 // --> Call commands...
 module.exports = {
