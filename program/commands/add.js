@@ -1,6 +1,6 @@
 module.exports = {
     name: 'add.js',
-    async execute (Discord, client, message, fs, alert) {
+    async execute (Discord, client, message, fs, alert, prefix) {
 
         // Intro Message
         c = message.channel;

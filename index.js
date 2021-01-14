@@ -3,22 +3,38 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('file-system');
 require('dotenv').config();
-const { alert, backend, status, prefix, status_erpt, status_mo7, status_mo8, status_mo19, status_garage} = require('./config.json')
+const { alert, backend, status, prefix} = require('./program/config/config.json')
 
 // --> Load command files
-const readyX = require('./commands/events/ready.js');
-const tempX = require('./commands/temp.js');
-const statusX = require('./commands/status.js');
-const addX = require('./commands/add.js');
-const setX = require('./commands/set.js');
-const deleteX = require('./commands/delete.js');
-const helpX = require('./commands/help.js');
+const readyX = require('./program/events/ready.js');
+const guildCreateX = require('./program/events/guildCreate.js');
+const guildDeleteX = require('./program/events/guildRemove.js');
+const tempX = require('./program/commands/temp.js');
+const statusX = require('./program/commands/status.js');
+const addX = require('./program/commands/add.js');
+const setX = require('./program/commands/set.js');
+const deleteX = require('./program/commands/delete.js');
+const helpX = require('./program/commands/help.js');
 
 // --> Listeners
 client.on('ready', () => {
-    readyX.execute(client, backend, prefix);
+    readyX.execute(client, prefix, fs);
 });
-client.on('message', async (message) => {
+client.on('GuildCreate', guild => {
+    guildCreateX.execute(fs, guild);
+});
+client.on('GuildRemove', guild => {
+    guildRemoveX.execute(fs, guild);
+});
+client.on('message', async message => {
+
+    // --> Auto commands
+    try {
+        if(X === `${prefix}status`) {
+            statusX.execute(Discord, fs, status, client);
+            return
+        }
+    } catch(err) {}; 
 
     // --> Filter
     if(!message.content.startsWith(prefix)) return;
@@ -28,17 +44,14 @@ client.on('message', async (message) => {
     tempX.execute(msg, prefix, message, fs, Discord);
 
     // --> Commands
-    if(msg.startsWith(prefix+'status')) {
-        statusX.execute (Discord, fs, alert, status, client, status_erpt, status_mo7, status_mo8, status_mo19, status_garage, message);
-    }
     if(msg.startsWith(prefix+'add')) {
-        addX.execute(Discord, client, message, fs, alert);
+        addX.execute(Discord, client, message, fs, alert, prefix);
     }
     if(msg.startsWith(prefix+'set')) {
         setX.execute(fs, message, Discord, alert, client, prefix);
     }
     if(msg.startsWith(prefix+'delete')) {
-        // delete vehicle
+        deleteX.execute();
     }
     if(msg.startsWith(prefix+'help')) {
         helpX.execute(Discord, prefix, status, message);

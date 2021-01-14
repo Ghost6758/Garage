@@ -2,10 +2,14 @@ module.exports = {
     name: 'temp.js',
     execute(msg, prefix, message, fs, Discord) {
         if(msg.startsWith(prefix+'setup')) {
-            message.channel.send('Standby...').then(m => { m.edit(m.id) });
-            message.channel.send('Standby...').then(m => { m.edit(m.id) });
-            message.channel.send('Standby...').then(m => { m.edit(m.id) });
-            message.channel.send('Standby...').then(m => { m.edit(m.id) });
+            message.delete();
+            embed1 = new Discord.MessageEmbed()
+                .setDescription('Standby..')
+            message.channel.send(embed1).then(m => { 
+                embed = new Discord.MessageEmbed()
+                    .setDescription(m.id);
+                m.edit(embed); 
+            });
         }
         if(msg.startsWith(prefix+'purge')) {
             message.channel.bulkDelete(99);

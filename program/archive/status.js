@@ -2,6 +2,13 @@ module.exports = {
     name: 'status.js',
     async execute (Discord, fs, alert, status, client, status_erpt, status_mo7, status_mo8, status_mo19, status_garage, message) {
         
+        // --> Messages
+        const status_erpt = "797840611842850856";
+        const status_mo7 = "797840612682498098";
+        const status_mo8 = "797840613600657529";
+        const status_mo19 = "797840614708346880";
+        const status_garage = "797840615613136926";
+        
         // --> Declare embeds
         let erpt_e = new Discord.MessageEmbed()
             .setTitle('Emergency Response & Patrol Team')
@@ -31,6 +38,7 @@ module.exports = {
         
         // --> Fetch data
         for (const file of fs.readdirSync(`./vehicles/${message.guild.id}/status/`).filter(file => file.endsWith('.json'))) {
+            
             let rawdata = fs.readFileSync(`./vehicles/${message.guild.id}/status/${file}`);
             let userData = JSON.parse(rawdata);
             for(let i in userData) {
