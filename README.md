@@ -1,5 +1,3 @@
-A discord bot written in javascript.
-
 # Setup
 
 Install the packages:
@@ -8,4 +6,3 @@ Install the packages:
   npm i dotenv
   
  Create a .env file. In this file enter: token=YOUR_TOKEN_HERE
- 
