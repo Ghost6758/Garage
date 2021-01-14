@@ -19,14 +19,15 @@ module.exports = {
             .setColor('#002492')  
         
         // --> Fetch data
-        console.log(guild);
         for (b = 0; b < guild.length; b++) {
             for (const file of fs.readdirSync(`./vehicles/${guild[b]}/`).filter(file => !file.startsWith('status'))) {
+
                 array.push(`\n\n__**${file}**__`);
+                
                 for (const file1 of fs.readdirSync(`./vehicles/${guild[b]}/${file}/`).filter(file => file.endsWith('.json'))) {
+                    
                     let veh_ = fs.readFileSync(`./vehicles/${guild[b]}/${file}/${file1}`);
                     let veh = JSON.parse(veh_);
-    
                     for(let i in veh) {
                         let type = veh[i].type;
                         let make = veh[i].make;
@@ -53,7 +54,7 @@ module.exports = {
                     };
                 };
             };
-        } 
+        }; 
         
 
         // --> Set description
