@@ -20,6 +20,7 @@
     "cron": "^1.8.2",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
-    "file-system": "^2.2.2"
+    "file-system": "^2.2.2",
+    "quick.db": "^7.1.3"
   }
 }
