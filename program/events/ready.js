@@ -14,11 +14,10 @@ module.exports = {
         }
 
         // --> Trigger update
-        setInterval(() => {
-            try {
-                message = `${prefix}status`
-                client.emit('message', message);
-            } catch(err) {}
-        }, frequency());
+        try {
+            setInterval(() => {
+                client.emit('message', `${prefix}status`);
+            }, frequency());
+        } catch(err) {}
     }
 }

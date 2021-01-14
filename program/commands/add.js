@@ -2,6 +2,14 @@ module.exports = {
     name: 'add.js',
     async execute (Discord, client, message, fs, alert, prefix) {
 
+        // --> Arrays
+        const division_array = [];
+
+        // --> Fill division array
+        for (const file of fs.readdirSync(`./vehicles/${message.guild.id}/`).filter(file => !file.startsWith('status'))) {
+            division_array.push(file);
+        }
+
         // Intro Message
         c = message.channel;
         embed1 = new Discord.MessageEmbed()
@@ -9,7 +17,7 @@ module.exports = {
             .setColor("#005EB8")
         embed2 = new Discord.MessageEmbed()
             .setTitle('Vehicle details')
-            .setDescription('Which division is recieving the vehicle? (ERPT/MO7/MO8/MO19)')
+            .setDescription(`Which division is recieving the vehicle? (${division_array.join('/')})`)
             .setColor("#00A9CE")
             .setTimestamp()
         c.send(embed1);
@@ -21,7 +29,7 @@ module.exports = {
             m.delete();
             t = m.content.toUpperCase().slice().split(' ');
 
-            if(t[0] == 'ERPT' || t[0] == 'MO7' || t[0] == 'MO8' || t[0] == 'MO19') {
+            if(division_array.includes(t[0])) {
                 const division = t[0];
                 embed3 = new Discord.MessageEmbed()
                     .setTitle('Vehicle details')
