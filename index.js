@@ -3,13 +3,14 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('file-system');
 require('dotenv').config();
-const { alert, backend, status, prefix} = require('./program/config/config.json')
+const { alert, status, prefix} = require('./program/config/config.json')
 
 // --> Load command files
 const readyX = require('./program/events/ready.js');
 const guildCreateX = require('./program/events/guildCreate.js');
 const guildDeleteX = require('./program/events/guildRemove.js');
-const tempX = require('./program/commands/temp.js');
+const devX = require('./program/commands/dev.js');
+const setupX = require('./program/commands/setup.js');
 const statusX = require('./program/commands/status.js');
 const addX = require('./program/commands/add.js');
 const setX = require('./program/commands/set.js');
@@ -23,27 +24,30 @@ client.on('ready', () => {
 client.on('GuildCreate', guild => {
     guildCreateX.execute(fs, guild);
 });
-client.on('GuildRemove', guild => {
-    guildRemoveX.execute(fs, guild);
+client.on('guildDelete', guild => {
+    guildDeleteX.execute(fs, guild);
 });
 client.on('message', async message => {
 
     // --> Auto commands
-    try {
-        if(X === `${prefix}status`) {
-            statusX.execute(Discord, fs, status, client);
-            return
-        }
-    } catch(err) {}; 
+    if(message === `${prefix}status`) {
+        statusX.execute(Discord, fs, status, client);
+        return
+    } 
 
     // --> Filter
     if(!message.content.startsWith(prefix)) return;
     const msg = message.content.toLowerCase();
 
-    // --> Tempory Commands
-    tempX.execute(msg, prefix, message, fs, Discord);
+    // --> Dev Commands
+    if(msg.startsWith(prefix+'dev')) {
+        devX.execute(msg, prefix, Discord);
+    }
 
     // --> Commands
+    if(msg.startsWith(prefix+'setup')) {
+        setupX.execute();
+    }
     if(msg.startsWith(prefix+'add')) {
         addX.execute(Discord, client, message, fs, alert, prefix);
     }
