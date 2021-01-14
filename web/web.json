@@ -1,0 +1,5 @@
+{
+	"port" : "6758",
+	"secret_key" : ["glebeskefe", "bardur", "gépadidé"],
+	"online_login" : true
+}
