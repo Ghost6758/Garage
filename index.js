@@ -25,7 +25,7 @@ client.on('message', async (message) => {
     const msg = message.content.toLowerCase();
 
     // --> Tempory Commands
-    tempX.execute(msg, prefix, message, fs);
+    tempX.execute(msg, prefix, message, fs, Discord);
 
     // --> Commands
     if(msg.startsWith(prefix+'status')) {
