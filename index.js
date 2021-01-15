@@ -7,12 +7,12 @@ require('dotenv').config();
 const { alert, status, prefix, backend } = require('./program/config/config.json');
 
 // --> Load web
-//require('./web/web.js');
+require('./web/web.js');
 
 // --> DB Connect
-/*mongoose.connect(process.env.ipDB, { useUnifiedTopology: true, useNewUrlParser: true }).then( t => {
+mongoose.connect(process.env.ipDB, { useUnifiedTopology: true, useNewUrlParser: true }).then( t => {
     console.log('--> DB Initialised');
-});*/
+});
 
 // --> Load command files
 const readyX = require('./program/events/ready.js');
