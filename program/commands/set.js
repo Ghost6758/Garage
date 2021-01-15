@@ -1,6 +1,6 @@
 module.exports = {
     name: 'set.js',
-    async execute (fs, message, Discord, alert, client, prefix, statusX) {
+    async execute (fs, message, Discord, alert, client, prefix, backend) {
         // Intro Message
         c = message.channel;
         embed1 = new Discord.MessageEmbed()
@@ -144,8 +144,7 @@ module.exports = {
                                             .setTimestamp()
                                         client.channels.cache.get(alert).send(embed5);
 
-                                        //let guild = message.guild.id;
-                                        //statusX.execute(Discord, fs, status, alert, client, guild);
+                                        client.channels.cache.get(backend).send(`${prefix}status ${message.guild.id}`);
                                     }
                                 });
                             } else {

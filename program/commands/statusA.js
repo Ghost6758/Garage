@@ -1,7 +1,7 @@
 module.exports = {
     name: 'statusA.js',
     description: 'all guilds',
-    async execute(Discord, fs, status, client) {
+    async execute(Discord, fs, status, alert, client) {
         
         // --> Arrays
         const array = [];

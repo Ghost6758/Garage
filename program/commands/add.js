@@ -1,6 +1,6 @@
 module.exports = {
     name: 'add.js',
-    async execute (Discord, client, message, fs, alert, prefix, statusX) {
+    async execute (Discord, client, message, fs, alert, prefix, backend) {
 
         // --> Arrays
         const division_array = [];
@@ -144,8 +144,7 @@ module.exports = {
                                 .setTimestamp()
                             client.channels.cache.get(alert).send(embed5);
 
-                            let guild = message.guild.id;
-                            statusX.execute(Discord, fs, status, alert, client, guild);
+                            client.channels.cache.get(backend).send(`${prefix}status ${message.guild.id}`);
                         });
                     });
                     
