@@ -52,7 +52,7 @@ module.exports = {
             deleteX.execute();
         }
         if(msg.startsWith(prefix+'help')) {
-            helpX.execute(Discord, prefix, status, message);
+            helpX.execute(fs, Discord, prefix, status, message);
         }
     }
 }

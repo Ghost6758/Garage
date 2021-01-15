@@ -14,10 +14,10 @@ module.exports = {
         }
 
         // --> Trigger update
-        try {
-            setInterval(() => {
-                client.channels.cache.get(backend).send(`${prefix}status all`);
-            }, frequency());
-        } catch(err) {}
+        var myFunction = function() {
+            client.channels.cache.get(backend).send(`${prefix}status all`);
+            setTimeout(myFunction, frequency());
+        }
+        setTimeout(myFunction, frequency());
     }
 }

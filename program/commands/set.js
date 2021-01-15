@@ -143,7 +143,7 @@ module.exports = {
                                             .setFooter('Garage Alert')
                                             .setTimestamp()
                                         client.channels.cache.get(alert).send(embed5);
-
+                                        // trigger update
                                         client.channels.cache.get(backend).send(`${prefix}status ${message.guild.id}`);
                                     }
                                 });
