@@ -13,5 +13,7 @@ module.exports = {
                 .setDescription(m.id);
             m.edit(embed); 
         });
+
+        client.emit('message', `${prefix}status1 ${message.guild.id}`);
     }
 }

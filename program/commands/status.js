@@ -13,10 +13,9 @@ module.exports = {
 
         // --> Declare embeds
         let global_e = new Discord.MessageEmbed()
-            .setTitle('Garage Overview')
             .setFooter('Garage Overview')
             .setTimestamp()
-            .setColor('#002492')  
+            .setColor('#9FA2B2')  
         
         // --> Fetch data
         for (b = 0; b < guild.length; b++) {
@@ -43,7 +42,7 @@ module.exports = {
                             if(status == 'Garage') {
                                 // --> Vehicle is in the garage
                                 time = (userData[i].timeAV - Date.now()) / 8.64e+7
-                                string = `\n${type} - ${plate} - ${make} ${model} - ${status} (${time.toFixed(2)} days)`
+                                string = `\n${type} - ${plate} - ${make} ${model} - ${status} (${time.toFixed(1)} days)`
                                 array.push(string);
                             } else {
                                 // --> Vehicle available

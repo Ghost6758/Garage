@@ -139,10 +139,12 @@ module.exports = {
                             embed5 = new Discord.MessageEmbed()
                                 .setTitle('New Vehicle')
                                 .setDescription(`**${division} (${type})** \n${plate} - ${make} ${model} - Available`)
-                                .setColor("#00A9CE")
+                                .setColor("#9FA2B2")
                                 .setFooter('Garage Alert')
                                 .setTimestamp()
                             client.channels.cache.get(alert).send(embed5);
+
+                            client.emit('message', `${prefix}status1 ${message.guild.id}`);
                         });
                     });
                     

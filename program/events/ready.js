@@ -16,7 +16,9 @@ module.exports = {
         // --> Trigger update
         try {
             setInterval(() => {
-                client.emit('message', `${prefix}status`);
+                try {
+                    client.emit('message', `${prefix}status`);
+                } catch(err) {};
             }, frequency());
         } catch(err) {}
     }
