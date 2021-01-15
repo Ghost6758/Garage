@@ -1,7 +1,7 @@
 // --> Load command files...
 const devX = require('./../commands/dev.js');
 const setupX = require('./../commands/setup.js');
-const statusX = require('../commands/statusX.js');
+const statusX = require('./../commands/statusX.js');
 const statusA = require('./../commands/statusA.js');
 const addX = require('./../commands/add.js');
 const setX = require('./../commands/set.js');
@@ -15,11 +15,16 @@ module.exports = {
         
         // --> Auto commands
         if(message.content.startsWith(prefix+'status')) {
-            if(message.content.slice(1) === 'all') {
+
+            if(message.author.id != client.user.id) return;
+            
+            if(message.content.includes('all')) {
                 statusA.execute(Discord, fs, status, client);
+                return
             } else {
-                guild = message.content.slice(1);
-                statusX.execute(Discord, fs, status, client, guild);
+                guild1 = message.content.split(' ');
+                guild = guild1[1];
+                statusX.execute(Discord, fs, status, alert, client, guild);
             }
         } 
 

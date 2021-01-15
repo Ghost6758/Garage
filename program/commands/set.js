@@ -91,6 +91,15 @@ module.exports = {
                                     client.channels.cache.get(alert).send(embed5);
                                 }
                             } else if(t == 'garage') {
+                                if(status == 'Garage') {
+                                    embedX = new Discord.MessageEmbed()
+                                        .setDescription(plate+' is already in the garage!')
+                                        .setColor("#00A9CE")
+                                        .setTimestamp()
+                                    pending.edit(embedX);
+                                    return
+                                }
+
                                 embed2 = new Discord.MessageEmbed()
                                     .setTitle('Vehicle status')
                                     .setDescription('For how many days do you want '+plate+' to be out of service?')

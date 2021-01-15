@@ -1,7 +1,7 @@
 module.exports = {
     name: 'status.js',
     description: 'Specific guild',
-    async execute(Discord, fs, status, client, guild) {
+    async execute(Discord, fs, status, alert, client, guild) {
         
         // --> Arrays
         const array = [];
@@ -34,10 +34,41 @@ module.exports = {
                         let status = userData[i].status;
 
                         if(status == 'Garage') {
-                            // --> Vehicle is in the garage
-                            time = (userData[i].timeAV - Date.now()) / 8.64e+7
-                            string = `\n${type} - ${plate} - ${make} ${model} - ${status} (${time.toFixed(1)} days)`
-                            array.push(string);
+                            
+                            let division = file;
+
+                            if(userData[i].timeAV < Date.now()) {
+
+                                // --> Vehicle is now ready
+                                let data3 = {};
+                                data3 [Date.now()] = {
+                                    status: "Available",
+                                    plate: plate,
+                                    division: division,
+                                    timeAV: "NA",
+                                };
+                                fs.writeFile(`./vehicles/${guild}/status/${plate}.json`, JSON.stringify(data3, null, 4), err => {
+                                    if (err) throw err;
+                                });
+
+                                embed = new Discord.MessageEmbed()
+                                    .setTitle('Vehicle Repaired')
+                                    .setDescription(`**${division} (${type})** \n${plate} - ${make} ${model} - Available`)
+                                    .setColor("#3C7A89")
+                                    .setFooter('Garage Alert')
+                                    .setTimestamp()
+                                client.channels.cache.get(alert).send(embed);
+
+                                string = `\n${type} - ${plate} - ${make} ${model} - ${status}`
+                                array.push(string);
+                                return
+
+                            } else {
+                                // --> Vehicle still in the garage
+                                time = (userData[i].timeAV - Date.now()) / 8.64e+7
+                                string = `\n${type} - ${plate} - ${make} ${model} - ${status} (${time.toFixed(1)} days)`
+                                array.push(string);
+                            }
                         } else {
                             // --> Vehicle available
                             string = `\n${type} - ${plate} - ${make} ${model} - ${status}`
@@ -57,7 +88,6 @@ module.exports = {
         await channel1.messages.fetch({around: '799714857788244008', limit: 1})
         .then(messages => {
             messages.first().edit(global_e);
-            console.log('edited');
         });
     }
 }

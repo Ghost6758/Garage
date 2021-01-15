@@ -1,8 +1,8 @@
 {
-    "1610700980362": {
-        "status": "Garage",
+    "1610745130623": {
+        "status": "Available",
         "plate": "BX17ABC",
-        "division": "ERPT",
-        "timeAV": 1610787380362
+        "division": "BX17ABC.json",
+        "timeAV": "NA"
     }
 }
