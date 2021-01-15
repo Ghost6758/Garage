@@ -7,5 +7,5 @@ app.get("/", function (req, res) {
 });
 
 app.listen(config.port, function() {
-	console.log('Running on '+config.port);
+	console.log('--> Web Initialised ('+config.port+')');
 });

@@ -144,7 +144,7 @@ module.exports = {
                                 .setTimestamp()
                             client.channels.cache.get(alert).send(embed5);
 
-                            client.emit('message', `${prefix}status1 ${message.guild.id}`);
+                            //client.emit('message', `${prefix}status1 ${message.guild.id}`);
                         });
                     });
                     

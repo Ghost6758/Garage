@@ -1,6 +1,6 @@
 module.exports = {
     name: 'setup.js',
-    async execute (message, Discord) {
+    async execute (message, Discord, client, prefix) {
         
         // --> Delete
         message.delete();
@@ -14,6 +14,6 @@ module.exports = {
             m.edit(embed); 
         });
 
-        client.emit('message', `${prefix}status1 ${message.guild.id}`);
+        //client.emit('message', `${prefix}status1 ${message.guild.id}`);
     }
 }

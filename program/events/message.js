@@ -1,7 +1,8 @@
 // --> Load command files...
 const devX = require('./../commands/dev.js');
 const setupX = require('./../commands/setup.js');
-const statusX = require('./../commands/status.js');
+const statusX = require('../commands/statusX.js');
+const statusA = require('./../commands/statusA.js');
 const addX = require('./../commands/add.js');
 const setX = require('./../commands/set.js');
 const deleteX = require('./../commands/delete.js');
@@ -10,18 +11,20 @@ const helpX = require('./../commands/help.js');
 // --> Call commands...
 module.exports = {
     name: 'message.js',
-    async execute(message, prefix, Discord, fs, status, alert, client) {
+    async execute(message, prefix, Discord, fs, status, alert, client, backend) {
         
         // --> Auto commands
-        if(message === `${prefix}status`) {
-            statusX.execute(Discord, fs, status, client);
-            return
+        if(message.content.startsWith(prefix+'status')) {
+            if(message.content.slice(1) === 'all') {
+                statusA.execute(Discord, fs, status, client);
+            } else {
+                guild = message.content.slice(1);
+                statusX.execute(Discord, fs, status, client, guild);
+            }
         } 
 
         // --> Filter
-        try {
-            if(!message.content.startsWith(prefix) || message.author.bot) return;
-        } catch(err) {return};
+        if(!message.content.startsWith(prefix) || message.author.bot) return;
         const msg = message.content.toLowerCase();
 
         // --> Dev Commands
@@ -35,7 +38,7 @@ module.exports = {
         }
         if(msg.startsWith(prefix+'set')) {
             if(msg.startsWith(prefix+'setup')) {
-                setupX.execute(message, Discord);
+                setupX.execute(message, Discord, client, prefix);
             } else {
                 setX.execute(fs, message, Discord, alert, client, prefix);
             }

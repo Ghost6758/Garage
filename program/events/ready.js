@@ -4,7 +4,7 @@ module.exports = {
         
         // --> status
         client.user.setActivity(`the garage • ${prefix}help`, { type: 'WATCHING' })
-        console.log('Cleaning up the garage...');
+        console.log('--> Bot initialised');
 
         // --> Fetch freq
         function frequency() {
@@ -16,9 +16,7 @@ module.exports = {
         // --> Trigger update
         try {
             setInterval(() => {
-                try {
-                    client.emit('message', `${prefix}status`);
-                } catch(err) {};
+                client.channels.cache.get('797578271361204266').send(`${prefix}status all`);
             }, frequency());
         } catch(err) {}
     }

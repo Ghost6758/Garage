@@ -1,5 +1,6 @@
 module.exports = {
-    name: 'status1.js',
+    name: 'statusA.js',
+    description: 'all guilds',
     async execute(Discord, fs, status, client) {
         
         // --> Arrays
@@ -19,6 +20,7 @@ module.exports = {
         
         // --> Fetch data
         for (b = 0; b < guild.length; b++) {
+
             for (const file of fs.readdirSync(`./vehicles/${guild[b]}/`).filter(file => !file.startsWith('status'))) {
 
                 array.push(`\n\n__**${file}**__`);
@@ -61,9 +63,10 @@ module.exports = {
 
         // --> Fetch messages & edit with updated values
         let channel1 = client.channels.cache.get(status);
-        await channel1.messages.fetch({around: '799269960693317722', limit: 1})
+        await channel1.messages.fetch({around: '799714857788244008', limit: 1})
         .then(messages => {
             messages.first().edit(global_e);
+            console.log('edited');
         });
     }
 }
