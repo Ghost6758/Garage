@@ -1,6 +1,6 @@
 module.exports = {
     name: 'set.js',
-    async execute (fs, message, Discord, alert, client, prefix) {
+    async execute (fs, message, Discord, alert, client, prefix, statusX) {
         // Intro Message
         c = message.channel;
         embed1 = new Discord.MessageEmbed()
@@ -144,7 +144,8 @@ module.exports = {
                                             .setTimestamp()
                                         client.channels.cache.get(alert).send(embed5);
 
-                                        //client.emit('message', `${prefix}status1 ${message.guild.id}`);
+                                        //let guild = message.guild.id;
+                                        //statusX.execute(Discord, fs, status, alert, client, guild);
                                     }
                                 });
                             } else {
@@ -154,11 +155,11 @@ module.exports = {
                                     .setTimestamp()
                                 pending.edit(embedX);
                                 return
-                            }
+                            };
                         });
                     };
                 };
-            }
+            };
         });
     }
 }

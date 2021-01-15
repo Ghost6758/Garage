@@ -17,7 +17,7 @@ module.exports = {
         if(message.content.startsWith(prefix+'status')) {
 
             if(message.author.id != client.user.id) return;
-            
+
             if(message.content.includes('all')) {
                 statusA.execute(Discord, fs, status, client);
                 return
@@ -38,14 +38,14 @@ module.exports = {
         }
 
         // --> Commands
-        if(msg.startsWith(prefix+'add')) {
-            addX.execute(Discord, client, message, fs, alert, prefix);
+        if(msg.startsWith(prefix+'add')) { //requires statusX
+            addX.execute(Discord, client, message, fs, alert, prefix, statusX);
         }
-        if(msg.startsWith(prefix+'set')) {
+        if(msg.startsWith(prefix+'set')) { 
             if(msg.startsWith(prefix+'setup')) {
                 setupX.execute(message, Discord, client, prefix);
-            } else {
-                setX.execute(fs, message, Discord, alert, client, prefix);
+            } else { // requires statusX
+                setX.execute(fs, message, Discord, alert, client, prefix, statusX);
             }
         }
         if(msg.startsWith(prefix+'delete')) {

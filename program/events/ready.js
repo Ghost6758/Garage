@@ -1,6 +1,6 @@
 module.exports = {
     name: 'ready.js',
-    execute (client, prefix, fs) {
+    execute (client, prefix, fs, backend) {
         
         // --> status
         client.user.setActivity(`the garage • ${prefix}help`, { type: 'WATCHING' })
@@ -16,7 +16,7 @@ module.exports = {
         // --> Trigger update
         try {
             setInterval(() => {
-                client.channels.cache.get('797578271361204266').send(`${prefix}status all`);
+                client.channels.cache.get(backend).send(`${prefix}status all`);
             }, frequency());
         } catch(err) {}
     }

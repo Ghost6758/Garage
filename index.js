@@ -4,10 +4,10 @@ const client = new Discord.Client();
 const fs = require('file-system');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const { alert, status, prefix, backend} = require('./program/config/config.json');
+const { alert, status, prefix, backend } = require('./program/config/config.json');
 
 // --> Load web
-require('./web/web.js');
+//require('./web/web.js');
 
 // --> DB Connect
 mongoose.connect(process.env.ipDB, { useUnifiedTopology: true, useNewUrlParser: true }).then( t => {
@@ -22,7 +22,7 @@ const messageX = require('./program/events/message.js');
 
 // --> Listeners
 client.on('ready', () => {
-    readyX.execute(client, prefix, fs);
+    readyX.execute(client, prefix, fs, backend);
 });
 client.on('guildCreate', guild => {
     guildCreateX.execute(fs, guild);
