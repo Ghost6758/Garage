@@ -11,15 +11,15 @@ module.exports = {
         client.guilds.cache.forEach(x => { 
             guild.push(x.id);
         });
-
-        // --> Declare embeds
-        let global_e = new Discord.MessageEmbed()
-            .setFooter('Garage Overview')
-            .setTimestamp()
-            .setColor('#9FA2B2')  
         
         // --> Fetch data
         for (b = 0; b < guild.length; b++) {
+
+            // --> Declare embeds
+            let global_e = new Discord.MessageEmbed()
+                .setFooter('Garage Overview')
+                .setTimestamp()
+                .setColor('#9FA2B2')  
 
             for (const file of fs.readdirSync(`./vehicles/${guild[b]}/`).filter(file => !file.startsWith('status'))) {
 
@@ -85,17 +85,15 @@ module.exports = {
                     };
                 };
             };
-        }; 
-        
+            // --> Set description
+            global_e.setDescription(array.join(' '));
 
-        // --> Set description
-        global_e.setDescription(array.join(' '));
-
-        // --> Fetch messages & edit with updated values
-        let channel1 = client.channels.cache.get(status);
-        await channel1.messages.fetch({around: '799714857788244008', limit: 1})
-        .then(messages => {
-            messages.first().edit(global_e);
-        });
+            // --> Fetch messages & edit with updated values
+            let channel1 = client.channels.cache.get(status);
+            await channel1.messages.fetch({around: '799714857788244008', limit: 1})
+            .then(messages => {
+                messages.first().edit(global_e);
+            });
+        }       
     }
 }

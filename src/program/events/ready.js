@@ -15,7 +15,9 @@ module.exports = {
 
         // --> Trigger update
         var myFunction = function() {
-            client.channels.cache.get(backend).send(`${prefix}status all`);
+            try {
+                client.channels.cache.get(backend).send(`${prefix}status all`);
+            } catch(err) {};
             setTimeout(myFunction, frequency());
         }
         setTimeout(myFunction, frequency());

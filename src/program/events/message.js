@@ -1,12 +1,12 @@
 // --> Load command files...
-const devX = require('./../commands/dev.js');
-const setupX = require('./../commands/setup.js');
-const statusX = require('./../commands/statusX.js');
-const statusA = require('./../commands/statusA.js');
-const addX = require('./../commands/add.js');
-const setX = require('./../commands/set.js');
-const deleteX = require('./../commands/delete.js');
-const helpX = require('./../commands/help.js');
+const devX = require('../commands/dev.js');
+const setupX = require('../commands/setup.js');
+const statusX = require('../commands/statusX.js');
+const statusA = require('../commands/statusA.js');
+const addX = require('../commands/add.js');
+const setX = require('../commands/set.js');
+const deleteX = require('../commands/delete.js');
+const helpX = require('../commands/help.js');
 
 // --> Call commands...
 module.exports = {
