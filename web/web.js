@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
-const config = require('./web.json');
+const { port } = require('./web.json');
 
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/landing.html");
 });
 
-app.listen(config.port, function() {
-	console.log('--> Web Initialised ('+config.port+')');
+app.listen(port, function() {
+	console.log('--> Web Initialised ('+port+')');
 });
