@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/JoeB6758/Garage#readme",
   "dependencies": {
+    "@joeb6758/string": "^1.2.1",
     "bcrypt": "^5.0.0",
     "cron": "^1.8.2",
     "discord.js": "^12.5.1",

@@ -3,6 +3,8 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('file-system');
 const db = require('quick.db')
+const command = require('@joeb6758/string');
+
 require('dotenv').config();
 const { alert, status, prefix, backend } = require('./program/config/config.json');
 
