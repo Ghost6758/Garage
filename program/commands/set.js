@@ -135,10 +135,28 @@ module.exports = {
                                             .setColor("#00A9CE")
                                             .setTimestamp()
                                         pending.edit(embedX);
+
                                         // alert
+                                        time = o.content * 8.64e+7
+                                        array = [];
+
+                                        if(time <= (8.64e+7 / 24)) { // less than one hour
+                                            time1 = time / (8.64e+7 / (24*60));
+                                            string = `(${time1.toFixed(0)} minutes)`
+                                            array.push(string);
+                                        } else if(time <= 8.64e+7) { // less than one day
+                                            time1 = time / (8.64e+7 / 24);
+                                            string = `(${time1.toFixed(0)} hours)`
+                                            array.push(string);
+                                        } else {
+                                            time1 = time / 8.64e+7;
+                                            string = `(${time1.toFixed(2)} days)`
+                                            array.push(string);
+                                        }
+
                                         embed5 = new Discord.MessageEmbed()
                                             .setTitle('Vehicle out for service')
-                                            .setDescription(`**${division} (${type})** \n${plate} - ${make} ${model} - Garage (${o.content} days)`)
+                                            .setDescription(`**${division} (${type})** \n${plate} - ${make} ${model} - Garage ${array[0]}`)
                                             .setColor("#2E4756")
                                             .setFooter('Garage Alert')
                                             .setTimestamp()

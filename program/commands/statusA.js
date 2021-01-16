@@ -72,9 +72,26 @@ module.exports = {
 
                                 } else {
                                     // --> Vehicle still in the garage
-                                    time = (userData[i].timeAV - Date.now()) / 8.64e+7
-                                    string = `\n${type} - ${plate} - ${make} ${model} - ${status} (${time.toFixed(1)} days)`
-                                    array.push(string);
+
+                                    time = (userData[i].timeAV - Date.now())
+                                    
+                                    if(time <= 60000) {
+                                        time1 = time / 1000;
+                                        string = `\n${type} - ${plate} - ${make} ${model} - ${status} (${time1.toFixed(0)} seconds)`
+                                        array.push(string);
+                                    } else if(time <= (8.64e+7 / 24)) { // less than one hour
+                                        time1 = time / (8.64e+7 / (24*60));
+                                        string = `\n${type} - ${plate} - ${make} ${model} - ${status} (${time1.toFixed(0)} minutes)`
+                                        array.push(string);
+                                    } else if(time <= 8.64e+7) { // less than one day
+                                        time1 = time / (8.64e+7 / 24);
+                                        string = `\n${type} - ${plate} - ${make} ${model} - ${status} (${time1.toFixed(0)} hours)`
+                                        array.push(string);
+                                    } else {
+                                        time1 = time / 8.64e+7;
+                                        string = `\n${type} - ${plate} - ${make} ${model} - ${status} (${time1.toFixed(2)} days)`
+                                        array.push(string);
+                                    }
                                 }
                             } else {
                                 // --> Vehicle available
@@ -85,6 +102,7 @@ module.exports = {
                     };
                 };
             };
+
             // --> Set description
             global_e.setDescription(array.join(' '));
 

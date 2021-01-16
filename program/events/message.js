@@ -53,7 +53,7 @@ module.exports = {
             deleteX.execute();
         }
         if(msg.startsWith(prefix+'stats')) {
-            statsX.execute();
+            statsX.execute(fs, message, Discord, client);
         }
         if(msg.startsWith(prefix+'help')) {
             helpX.execute(fs, Discord, prefix, status, message);
