@@ -2,17 +2,18 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('file-system');
-const mongoose = require('mongoose');
+const db = require('quick.db')
 require('dotenv').config();
 const { alert, status, prefix, backend } = require('./program/config/config.json');
 
 // --> Load web
-require('./web/web.js');
+//require('./web/web.js');
 
-// --> DB Connect
-mongoose.connect(process.env.ipDB, { useUnifiedTopology: true, useNewUrlParser: true }).then( t => {
-    console.log('--> DB Initialised');
-});
+// --> DB Configure
+const statusMSG = new db.table('statusMSG'); 
+const statusCHL = new db.table('statusCHL'); 
+const alertCHL = new db.table('alertCHL'); 
+console.log('--> DB Initialised')
 
 // --> Load command files
 const readyX = require('./program/events/ready.js');
@@ -31,7 +32,7 @@ client.on('guildDelete', guild => {
     guildDeleteX.execute(fs, guild);
 });
 client.on('message', async message => {
-    messageX.execute(message, prefix, Discord, fs, status, alert, client, backend);
+    messageX.execute(message, prefix, Discord, fs, client, backend, status, alert, statusMSG, statusCHL, alertCHL);
 });
 
 client.login(process.env.token)

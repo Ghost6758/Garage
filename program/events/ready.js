@@ -4,7 +4,7 @@ module.exports = {
         
         // --> status
         client.user.setActivity(`the garage • ${prefix}help`, { type: 'WATCHING' })
-        console.log('--> Bot initialised');
+        console.log('--> Bot Initialised');
 
         // --> Fetch freq
         function frequency() {

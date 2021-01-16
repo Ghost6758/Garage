@@ -19,7 +19,7 @@ module.exports = {
         collector1.on('collect', async m => {
             m.delete();
             t = m.content.toUpperCase();
-            if(!fs.existsSync(`./vehicles/${message.guild.id}/status/${t}.json`)) {
+            if(!fs.existsSync(`./vehicles/${message.guild.id}/xyz_status/${t}.json`)) {
                 embedX = new Discord.MessageEmbed()
                     .setDescription('Could not find any vehicle with the reg of '+t+'. Please restart the process by entering `'+prefix+'add`')
                     .setColor("#00A9CE")
@@ -28,7 +28,7 @@ module.exports = {
                 return
             } else {
 
-                let rawdata = fs.readFileSync(`./vehicles/${message.guild.id}/status/${t}.json`);
+                let rawdata = fs.readFileSync(`./vehicles/${message.guild.id}/xyz_status/${t}.json`);
                 let userData = JSON.parse(rawdata);
                 for(let i in userData) {
 
@@ -73,12 +73,12 @@ module.exports = {
                                         division: division,
                                         timeAV: "NA",
                                     };
-                                    fs.writeFile(`./vehicles/${message.guild.id}/status/${plate}.json`, JSON.stringify(data3, null, 4), err => {
+                                    fs.writeFile(`./vehicles/${message.guild.id}/xyz_status/${plate}.json`, JSON.stringify(data3, null, 4), err => {
                                         if (err) throw err;
                                     });
 
                                     embed1 = new Discord.MessageEmbed()
-                                        .setFooter('Vehicle has repaired.')
+                                        .setFooter('Vehicle has been repaired.')
                                         .setColor("#005EB8")
                                     pending.edit(embed1);
 
@@ -127,7 +127,7 @@ module.exports = {
                                             division: division,
                                             timeAV: (o.content * 8.64e+7) + Date.now()
                                         };
-                                        fs.writeFile(`./vehicles/${message.guild.id}/status/${plate}.json`, JSON.stringify(data1, null, 4), err => {
+                                        fs.writeFile(`./vehicles/${message.guild.id}/xyz_status/${plate}.json`, JSON.stringify(data1, null, 4), err => {
                                             if (err) throw err;
                                         });
                                         embedX = new Discord.MessageEmbed()

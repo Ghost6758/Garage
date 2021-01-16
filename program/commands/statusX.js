@@ -13,7 +13,7 @@ module.exports = {
             .setColor('#9FA2B2')  
         
         // --> Fetch data
-        for (const file of fs.readdirSync(`./vehicles/${guild}/`).filter(file => !file.startsWith('status'))) {
+        for (const file of fs.readdirSync(`./vehicles/${guild}/`).filter(file => !file.startsWith('xyz_status') && !file.startsWith('xyz_setup'))) {
 
             array.push(`\n\n__**${file}**__`);
                 
@@ -26,7 +26,7 @@ module.exports = {
                     let make = veh[i].make;
                     let model = veh[i].model;
                     
-                    let rawdata = fs.readFileSync(`./vehicles/${guild}/status/${file1}`);
+                    let rawdata = fs.readFileSync(`./vehicles/${guild}/xyz_status/${file1}`);
                     let userData = JSON.parse(rawdata);
                     for(let i in userData) {
         
@@ -47,7 +47,7 @@ module.exports = {
                                     division: division,
                                     timeAV: "NA",
                                 };
-                                fs.writeFile(`./vehicles/${guild}/status/${plate}.json`, JSON.stringify(data3, null, 4), err => {
+                                fs.writeFile(`./vehicles/${guild}/xyz_status/${plate}.json`, JSON.stringify(data3, null, 4), err => {
                                     if (err) throw err;
                                 });
 

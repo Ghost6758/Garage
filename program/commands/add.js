@@ -6,7 +6,7 @@ module.exports = {
         const division_array = [];
 
         // --> Fill division array
-        for (const file of fs.readdirSync(`./vehicles/${message.guild.id}/`).filter(file => !file.startsWith('status'))) {
+        for (const file of fs.readdirSync(`./vehicles/${message.guild.id}/`).filter(file => !file.startsWith('xyz_status') && !file.startsWith('xyz_setup'))) {
             division_array.push(file);
         }
 
@@ -132,7 +132,7 @@ module.exports = {
                                 division: division,
                                 timeAV: "NA",
                             };
-                            fs.writeFile(`./vehicles/${message.guild.id}/status/${plate}.json`, JSON.stringify(data3, null, 4), err => {
+                            fs.writeFile(`./vehicles/${message.guild.id}/xyz_status/${plate}.json`, JSON.stringify(data3, null, 4), err => {
                                 if (err) throw err;
                             });
 
