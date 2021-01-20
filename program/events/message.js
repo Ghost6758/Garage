@@ -35,7 +35,7 @@ module.exports = {
 
         // --> Dev Commands
         if(msg.startsWith(prefix+'dev')) {
-            devX.execute(msg, prefix, Discord);
+            devX.execute(message, msg, prefix, fs, Discord);
         }
 
         // --> Commands
@@ -50,7 +50,7 @@ module.exports = {
             setX.execute(fs, message, Discord, alert, client, prefix, backend);
         }
         if(msg.startsWith(prefix+'delete')) {
-            deleteX.execute();
+            deleteX.execute(fs, message, Discord, alert, client, prefix, backend);
         }
         if(msg.startsWith(prefix+'stats')) {
             statsX.execute(fs, message, Discord, client);
