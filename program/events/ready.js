@@ -21,5 +21,8 @@ module.exports = {
             setTimeout(myFunction, frequency());
         }
         setTimeout(myFunction, frequency());
+
+        // --> Initial update
+        client.channels.cache.get(backend).send(`${prefix}status all`)
     }
 }
