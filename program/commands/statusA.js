@@ -9,7 +9,11 @@ module.exports = {
 
         // --> Fill guild array
         client.guilds.cache.forEach(x => { 
-            guild.push(x.id);
+            if(x.id != '793877535238782997') {
+                guild.push(x.id);
+            } else {
+                return
+            }
         });
         
         // --> Fetch data
@@ -108,9 +112,9 @@ module.exports = {
 
             // --> Fetch messages & edit with updated values
             let channel1 = client.channels.cache.get(status);
-            await channel1.messages.fetch({around: '799714857788244008', limit: 1})
+            await channel1.messages.fetch({around: '804887103254954024', limit: 1})
             .then(messages => {
-                messages.first().edit(global_e);
+               messages.first().edit(global_e);
             });
         }       
     }

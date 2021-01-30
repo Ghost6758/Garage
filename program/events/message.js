@@ -12,7 +12,7 @@ const helpX = require('../commands/help.js');
 // --> Call commands...
 module.exports = {
     name: 'message.js',
-    async execute(message, prefix, Discord, fs, client, backend, status, alert, statusMSG, statusCHL, alertCHL) {
+    async execute(message, prefix, Discord, fs, client, backend, status, alert) {
         
         // --> Auto commands
         if(message.content.startsWith(prefix+'status')) {

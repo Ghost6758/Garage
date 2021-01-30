@@ -3,7 +3,7 @@ module.exports = {
     execute (client, prefix, fs, backend) {
         
         // --> status
-        client.user.setActivity(`the garage • ${prefix}help`, { type: 'WATCHING' })
+        client.user.setActivity(`the garage`, { type: 'WATCHING' })
         console.log('--> Bot Initialised');
 
         // --> Fetch freq

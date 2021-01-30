@@ -85,7 +85,7 @@ module.exports = {
 
         // --> Fetch messages & edit with updated values
         let channel1 = client.channels.cache.get(status);
-        await channel1.messages.fetch({around: '799714857788244008', limit: 1})
+        await channel1.messages.fetch({around: '804887103254954024', limit: 1})
         .then(messages => {
             messages.first().edit(global_e);
         });
